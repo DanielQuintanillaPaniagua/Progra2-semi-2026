@@ -42,7 +42,7 @@
     <EditText
         android:id="@+id/textNume2"
         android:layout_width="294dp"
-        android:layout_height="35dp"
+        android:layout_height="55dp"
         android:hint="escribe un numero"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
