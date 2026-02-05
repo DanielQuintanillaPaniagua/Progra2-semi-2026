@@ -2,6 +2,7 @@ package com.example.myfirstapp;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,8 @@ public class MainActivity extends AppCompatActivity {
     TextView tempVal;
 
     Button btn;
+    RadioButton opt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +27,27 @@ public class MainActivity extends AppCompatActivity {
 
         tempVal = findViewById(R.id.textNume2);
         Double num2 = Double.parseDouble(tempVal.getText().toString());
-
-        double respuesta = num1 + num2;
+        double respuesta=0;
+         opt=findViewById(R.id.optsuma);
+         if (opt.isChecked()) {
+             respuesta =num1+num2;
+             opt=findViewById(R.id.optResta);
+                     if(opt.isChecked()){
+                         respuesta=num1-num2;
+                     }
+         }
+         opt=findViewById(R.id.optMultiplicar);
+        if (opt.isChecked()) {
+            respuesta=num1*num2;
+        }
+        opt=findViewById(R.id.optDividir);
+                if(opt.isChecked()){
+                    respuesta=num1/num2;
+                }
+                opt=findViewById(R.id.optFactorial);
+                if (opt.isChecked()){
+                    respuesta=num1
+                }
 
         tempVal = findViewById(R.id.lblRespuesta);
         tempVal.setText("Respuesta: "+ respuesta);
