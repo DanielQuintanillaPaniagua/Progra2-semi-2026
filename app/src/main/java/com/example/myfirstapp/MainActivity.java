@@ -16,9 +16,9 @@ public class MainActivity extends AppCompatActivity {
     Button btn;
     Double valores[] = new Double[] {1.0, 0.92, 7.79, 24.70, 36.80, 528.50, 17.10, 0.79, 149.50, 1.39, 0.88, 7.24};
     Double valoresLongitud[] = new Double[] {1.0, 1000.0, 0.01, 0.001, 1609.34, 0.0254, 0.3048};
-    Double valoresVolumen[] = new Double[] {1.0, 0.001, 3.78541, 1000.0, 0.0295735};
+    Double valoresVolumen[] = {1.0, 0.001, 3.78541};
     Double valoresmasa[] = new Double[] { 1.0, 0.001, 0.453592, 0.0283495, 1000.0};
-    Double valoresAlmacenamiento[] = new Double[] { 1.0, 1024.0, 1048576.0, 1073741824.0, 1099511627776.0,8.0};
+    Double valoresAlmacenamiento[] = {1.0, 1024.0, 1048576.0, 1073741824.0, 1099511627776.0, 0.125};
     Double valorTiempo[] = new  Double[] {1.0, 60.0, 3600.0,86400.0,604800.0, 2592000.0, 31536000.0, 0.001  };
     Double valortransferencia[]=new Double[] {1.0, 1000.0, 1000000.0, 1000000000.0, 8.0, 8000.0, 8000000.0 };
 
@@ -32,13 +32,13 @@ public class MainActivity extends AppCompatActivity {
         tbh = findViewById(R.id.tbhConversores);
         tbh.setup();
 
-        tbh.addTab(tbh.newTabSpec("Monedas").setContent(R.id.tabMonedas).setIndicator("MONEDAS", null));
-        tbh.addTab(tbh.newTabSpec("Longitud").setContent(R.id.tabLongitud).setIndicator("LONGITUD", null));
-        tbh.addTab(tbh.newTabSpec("Volumen").setContent(R.id.tabVolumen).setIndicator("VOLUMEN", null));
-        tbh.addTab(tbh.newTabSpec("Masa").setContent(R.id.tabMasa).setIndicator("MASA", null));
-        tbh.addTab(tbh.newTabSpec("Almacenamiento").setContent(R.id.tabAlmacenamiento).setIndicator("ALMACENAMIENTO", null));
-        tbh.addTab(tbh.newTabSpec("Tiempo").setContent(R.id.tabTiempo).setIndicator("TIEMPO", null));
-        tbh.addTab(tbh.newTabSpec("transferencia").setContent(R.id.tabtransferencia).setIndicator("transferencia", null));
+        tbh.addTab(tbh.newTabSpec("Monedas").setContent(R.id.tabMonedas).setIndicator("",getDrawable(R.drawable.money_6997728)));
+        tbh.addTab(tbh.newTabSpec("Longitud").setContent(R.id.tabLongitud).setIndicator("", getDrawable(R.drawable.height_12317278)));
+        tbh.addTab(tbh.newTabSpec("Volumen").setContent(R.id.tabVolumen).setIndicator("",getDrawable(R.drawable.production_3516759)));
+        tbh.addTab(tbh.newTabSpec("Masa").setContent(R.id.tabMasa).setIndicator("", getDrawable(R.drawable.scale_15168338)));
+        tbh.addTab(tbh.newTabSpec("Almacenamiento").setContent(R.id.tabAlmacenamiento).setIndicator("", getDrawable(R.drawable.hosting_542646)));
+        tbh.addTab(tbh.newTabSpec("Tiempo").setContent(R.id.tabTiempo).setIndicator("",getDrawable(R.drawable.clock_259699) ));
+        tbh.addTab(tbh.newTabSpec("transferencia").setContent(R.id.tabtransferencia).setIndicator("", getDrawable(R.drawable.file_15250160)));
 
 
 
@@ -154,9 +154,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     double conversor(int de, int a, double cantidad, Double[] valoresArray){
-        return valoresArray[a]/valoresArray[de] * cantidad;
+        return cantidad * valoresArray[de] / valoresArray[a];
+    }
 
 
 
-}
 }
