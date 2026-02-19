@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
             {1.0, 0.001, 100.0, 1000.0, 0.000621371, 39.3701, 3.28084},//longitud
             {1.0, 1000.0, 0.264172},//volumen
             {1.0, 1000.0, 2.20462, 35.274, 0.001},//masa
-            {1.0, 1024.0, 1048576.0, 1073741824.0, 1099511627776.0, 0.125},//almacenamiento
-            {1.0, 60.0, 3600.0, 86400.0, 604800.0, 2592000.0, 31536000.0, 0.001}, //tiempo
-            {1.0, 1000.0, 1000000.0, 1000000000.0, 8.0, 8000.0, 8000000.0}//transferencia
+            {1.0, 0.0009765625, 0.000000953674316, 0.000000000931322, 0.000000000000909495, 8.0}  ,                //almacenamiento
+            {1.0, 0.0166667, 0.000277778, 0.000011574, 0.000001653, 0.000000385, 0.0000000317, 1000.0},//tiempo
+            {1.0, 0.001, 0.000001, 0.000000001, 0.125, 0.000125, 0.000000125}//transferencia
     };
     String[][] etiquetas = {
             {"Dolar", "Euro", "Quetzal", "Lempira", "Cordoba", "Colon CR", " Peso Mexicano", " Libra Esterlina", "Yen Japonés ", " Dólar Canadiense", "Franco Suizo", "Yuan Chino "}, //monedas
