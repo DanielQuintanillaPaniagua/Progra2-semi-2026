@@ -1,12 +1,4 @@
 <resources>
-    <string name="app_name">Conversores</string>
-    <string-array name="tipo">
-        <item>Moendas</item>
-        <item>Longitud</item>
-        <item>Volumen</item>
-        <item>Masa</item>
-        <item>Almacenamiento</item>
-        <item> tiempo</item>
-        <item> transferencia</item>
-    </string-array>
+    <string name="app_name">sensor proximidad</string>
+
 </resources>
