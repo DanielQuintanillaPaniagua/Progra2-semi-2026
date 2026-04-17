@@ -14,23 +14,23 @@ import java.util.ArrayList;
 
 public class AdaptadorAmigos extends BaseAdapter {
     Context context;
-    ArrayList<amigo> alAmigos;
-    amigo misAmigos;
+    ArrayList<amigo> alAmigo;
+    amigo misAmigo;
     LayoutInflater inflater;
 
-    public AdaptadorAmigos(Context context, ArrayList<amigo> alAmigos) {
+    public AdaptadorAmigos(Context context, ArrayList<amigo> alAmigo) {
         this.context = context;
-        this.alAmigos = alAmigos;
+        this.alAmigo = alAmigo;
     }
 
     @Override
     public int getCount() {
-        return alAmigos.size();
+        return alAmigo.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return alAmigos.get(position);
+        return alAmigo.get(position);
     }
 
     @Override
@@ -43,19 +43,19 @@ public class AdaptadorAmigos extends BaseAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(R.layout.fotos, parent, false);
         try{
-            misAmigos = alAmigos.get(position);
+            misAmigo = alAmigo.get(position);
 
             TextView tempVal = itemView.findViewById(R.id.lblNombreAdaptador);
-            tempVal.setText(misAmigos.getNombre());
+            tempVal.setText(misAmigo.getNombre());
 
             tempVal = itemView.findViewById(R.id.lblTelefonoAdaptador);
-            tempVal.setText(misAmigos.getTelefono());
+            tempVal.setText(misAmigo.getTelefono());
 
             tempVal = itemView.findViewById(R.id.lblEmailAdaptador);
-            tempVal.setText(misAmigos.getEmail());
+            tempVal.setText(misAmigo.getEmail());
 
             ImageView img = itemView.findViewById(R.id.imgFotoAdaptador);
-            Bitmap bitmap = BitmapFactory.decodeFile(misAmigos.getFoto());
+            Bitmap bitmap = BitmapFactory.decodeFile(misAmigo.getFoto());
             img.setImageBitmap(bitmap);
         } catch (Exception e) {
             Toast.makeText(context, "Error: "+ e.getMessage(), Toast.LENGTH_LONG).show();

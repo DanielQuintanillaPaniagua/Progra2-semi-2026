@@ -1,6 +1,6 @@
 package com.example.myfirstapp;
 
-public class amigo {
+public class amigo{
     String idAmigo;
     String nombre;
     String direccion;
