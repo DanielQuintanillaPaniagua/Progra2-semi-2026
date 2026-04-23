@@ -57,7 +57,7 @@ public class ProductoAdapter extends BaseAdapter {
         tvPrecio.setText("$" + item.get("precio"));
 
         String urlFoto = item.get("urlFoto");
-        imgItem.setImageResource(android.R.drawable.ic_menu_camera); // imagen por defecto
+        imgItem.setImageResource(android.R.drawable.ic_menu_camera); // Icono por defecto
 
         if (urlFoto != null && !urlFoto.isEmpty()) {
             String primeraFoto = urlFoto.split(",")[0].trim();
@@ -66,7 +66,6 @@ public class ProductoAdapter extends BaseAdapter {
                 if (foto.exists()) {
                     imgItem.setImageURI(null);
                     imgItem.setImageURI(Uri.fromFile(foto));
-                    imgItem.setClipToOutline(true);
                 }
             }
         }
@@ -74,4 +73,3 @@ public class ProductoAdapter extends BaseAdapter {
         return convertView;
     }
 }
-

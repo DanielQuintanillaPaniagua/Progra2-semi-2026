@@ -8,16 +8,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DB extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "Tienda";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String SQLdb =
-            "CREATE TABLE productos  (" +
-                    "idProducto  INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "CREATE TABLE productos (" +
+                    "idProducto INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "codigo TEXT," +
                     "descripcion TEXT," +
                     "marca TEXT," +
                     "presentacion TEXT," +
                     "precio TEXT," +
+                    "costo TEXT," +
+                    "stock INTEGER," +
                     "urlFoto TEXT)";
 
     public DB(Context context) {
@@ -38,41 +40,44 @@ public class DB extends SQLiteOpenHelper {
     public String administrar_Productos(String accion, String[] datos) {
         try {
             SQLiteDatabase db = getWritableDatabase();
-            String mensaje = "ok";
             String sql = "";
 
             switch (accion) {
 
                 case "nuevo":
-                    sql = "INSERT INTO productos(codigo,descripcion,marca,presentacion,precio,urlFoto) VALUES(" +
+                    sql = "INSERT INTO productos(codigo,descripcion,marca,presentacion,precio,costo,stock,urlFoto) VALUES(" +
                             "'" + datos[1] + "'," +
                             "'" + datos[2] + "'," +
                             "'" + datos[3] + "'," +
                             "'" + datos[4] + "'," +
                             "'" + datos[5] + "'," +
-                            "'" + datos[6] + "')";
+                            "'" + datos[6] + "'," +
+                            "'" + datos[7] + "'," +
+                            "'" + datos[8] + "')";
                     break;
 
                 case "modificar":
-                    sql = "UPDATE productos  SET " +
+                    sql = "UPDATE productos SET " +
                             "codigo='" + datos[1] + "'," +
                             "descripcion='" + datos[2] + "'," +
                             "marca='" + datos[3] + "'," +
                             "presentacion='" + datos[4] + "'," +
                             "precio='" + datos[5] + "'," +
-                            "urlFoto='" + datos[6] + "' " +
+                            "costo='" + datos[6] + "'," +
+                            "stock='" + datos[7] + "'," +
+                            "urlFoto='" + datos[8] + "' " +
                             "WHERE idProducto='" + datos[0] + "'";
                     break;
 
                 case "eliminar":
-                    sql = "DELETE FROM productos  WHERE idProducto='" + datos[0] + "'";
+                    sql = "DELETE FROM productos WHERE idProducto='" + datos[0] + "'";
                     break;
             }
 
             db.execSQL(sql);
             db.close();
 
-            return mensaje;
+            return "ok";
 
         } catch (Exception e) {
             return e.getMessage();
@@ -83,12 +88,10 @@ public class DB extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery("SELECT * FROM productos", null);
     }
-    //Busacr
-    public  Cursor buscar_producto(String codigo){
+
+    public Cursor buscar_producto(String codigo) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery(
                 "SELECT * FROM productos WHERE codigo LIKE '%" + codigo + "%'", null);
     }
-
-    }
-
+}

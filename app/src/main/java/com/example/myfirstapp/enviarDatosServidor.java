@@ -10,8 +10,7 @@ import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class enviarDatosServidor {
-
+public class enviarDatosServidor{
     public interface Callback {
         void onRespuesta(String respuesta);
     }
@@ -27,21 +26,26 @@ public class enviarDatosServidor {
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setRequestMethod(metodo);
                 httpURLConnection.setRequestProperty("Content-Type", "application/json");
-                httpURLConnection.setRequestProperty("Accept", "application/json");
-                httpURLConnection.setRequestProperty("Authorization",
-                        "Basic " + utilidades.credencialesCodificadas);
+                // Uso de las credenciales de la clase utilidades
+                httpURLConnection.setRequestProperty("Authorization", "Basic " + utilidades.credencialesCodificadas);
 
                 Writer writer = new OutputStreamWriter(httpURLConnection.getOutputStream(), "UTF-8");
                 writer.write(jsonDatos);
+                writer.flush();
                 writer.close();
 
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                StringBuilder sb = new StringBuilder();
-                String linea;
-                while ((linea = bufferedReader.readLine()) != null) sb.append(linea);
-                jsonResponse = sb.toString();
+                int responseCode = httpURLConnection.getResponseCode();
+                InputStream inputStream = (responseCode >= 200 && responseCode < 300)
+                        ? httpURLConnection.getInputStream() : httpURLConnection.getErrorStream();
 
+                if (inputStream != null) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+                    StringBuilder sb = new StringBuilder();
+                    String linea;
+                    while ((linea = br.readLine()) != null) sb.append(linea);
+                    jsonResponse = sb.toString();
+                    br.close();
+                }
             } catch (Exception e) {
                 jsonResponse = "Error: " + e.getMessage();
             } finally {

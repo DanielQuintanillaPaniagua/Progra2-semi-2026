@@ -46,8 +46,7 @@ public class ListaActivity extends AppCompatActivity {
         });
 
         lista.setOnItemClickListener((parent, view, position, id) -> {
-            HashMap<String, String> item =
-                    (HashMap<String, String>) parent.getItemAtPosition(position);
+            HashMap<String, String> item = (HashMap<String, String>) parent.getItemAtPosition(position);
 
             String[] opciones = {"✏️ Modificar", "🗑️ Eliminar", "➕ Agregar nuevo"};
 
@@ -55,8 +54,7 @@ public class ListaActivity extends AppCompatActivity {
                     .setTitle(item.get("descripcion"))
                     .setItems(opciones, (dialog, which) -> {
                         switch (which) {
-
-                            case 0:
+                            case 0: // Modificar
                                 Intent intent = new Intent(this, MainActivity.class);
                                 intent.putExtra("idProducto",   item.get("idProducto"));
                                 intent.putExtra("codigo",       item.get("codigo"));
@@ -64,71 +62,59 @@ public class ListaActivity extends AppCompatActivity {
                                 intent.putExtra("marca",        item.get("marca"));
                                 intent.putExtra("presentacion", item.get("presentacion"));
                                 intent.putExtra("precio",       item.get("precio"));
+                                intent.putExtra("costo",        item.get("costo"));
+                                intent.putExtra("stock",        item.get("stock"));
                                 intent.putExtra("urlFoto",      item.get("urlFoto"));
                                 startActivity(intent);
                                 break;
 
-                            case 1:
-                                new AlertDialog.Builder(this)
-                                        .setTitle("Eliminar Producto")
-                                        .setMessage("¿Estás seguro que deseas eliminar \""
-                                                + item.get("descripcion") + "\"?")
-                                        .setPositiveButton("Sí, eliminar", (d, w) -> {
-                                            String[] datos = {item.get("idProducto"),
-                                                    "", "", "", "", "", ""};
-                                            String resultado =
-                                                    db.administrar_Productos("eliminar", datos);
-                                            if (resultado.equals("ok")) {
-                                                // Eliminar también en CouchDB
-                                                String docUrl = utilidades.url_mto
-                                                        + "/producto_" + item.get("idProducto");
-                                                obtenerDatosServidor.obtener(docUrl, respuesta -> {
-                                                    if (respuesta != null && respuesta.contains("_rev")) {
-                                                        try {
-                                                            int i = respuesta.indexOf("\"_rev\":\"") + 8;
-                                                            int j = respuesta.indexOf("\"", i);
-                                                            String rev = respuesta.substring(i, j);
-                                                            String deleteUrl = docUrl + "?rev=" + rev;
-                                                            enviarDatosServidor.enviar("", "DELETE",
-                                                                    deleteUrl, r ->
-                                                                            Toast.makeText(this,
-                                                                                    r != null && r.contains("\"ok\":true")
-                                                                                            ? "Eliminado de CouchDB ✓"
-                                                                                            : "Eliminado localmente",
-                                                                                    Toast.LENGTH_SHORT).show());
-                                                        } catch (Exception e) { }
-                                                    }
-                                                });
-                                                Toast.makeText(this, "Producto eliminado ✓",
-                                                        Toast.LENGTH_SHORT).show();
-                                                cargarLista();
-                                            }
-                                        })
-                                        .setNegativeButton("Cancelar", (d, w) -> d.dismiss())
-                                        .show();
+                            case 1: // Eliminar
+                                confirmarEliminacion(item);
                                 break;
 
-                            case 2:
-                                Intent intentNuevo = new Intent(this, MainActivity.class);
-                                startActivity(intentNuevo);
+                            case 2: // Nuevo
+                                startActivity(new Intent(this, MainActivity.class));
                                 break;
                         }
                     })
                     .show();
         });
+
+        FloatingActionButton fabAgregar = findViewById(R.id.fabAgregar);
+        fabAgregar.setOnClickListener(v -> startActivity(new Intent(this, MainActivity.class)));
+    }
+
+    private void cargarLista() {
+        todosLosDatos = new ArrayList<>();
+        Cursor c = db.lista_productos();
+
+
+        if (c.moveToFirst()) {
+            do {
+                HashMap<String, String> fila = new HashMap<>();
+                fila.put("idProducto",   c.getString(0));
+                fila.put("codigo",       c.getString(1));
+                fila.put("descripcion",  c.getString(2));
+                fila.put("marca",        c.getString(3));
+                fila.put("presentacion", c.getString(4));
+                fila.put("precio",       c.getString(5));
+                fila.put("costo",        c.getString(6));
+                fila.put("stock",        c.getString(7));
+                fila.put("urlFoto",      c.getString(8));
+                todosLosDatos.add(fila);
+            } while (c.moveToNext());
+        }
+        c.close();
+
+        adapter = new ProductoAdapter(this, todosLosDatos);
+        lista.setAdapter(adapter);
     }
 
     private void filtrar(String texto) {
         ArrayList<HashMap<String, String>> filtrados = new ArrayList<>();
-
         for (HashMap<String, String> fila : todosLosDatos) {
-            String codigo      = fila.get("codigo")      != null ? fila.get("codigo").toLowerCase()      : "";
-            String descripcion = fila.get("descripcion") != null ? fila.get("descripcion").toLowerCase() : "";
-            String precio      = fila.get("precio")      != null ? fila.get("precio").toLowerCase()      : "";
-
-            if (codigo.contains(texto.toLowerCase())      ||
-                    descripcion.contains(texto.toLowerCase()) ||
-                    precio.contains(texto.toLowerCase())) {
+            if (fila.get("descripcion").toLowerCase().contains(texto.toLowerCase()) ||
+                    fila.get("codigo").toLowerCase().contains(texto.toLowerCase())) {
                 filtrados.add(fila);
             }
         }
@@ -136,29 +122,19 @@ public class ListaActivity extends AppCompatActivity {
         lista.setAdapter(adapter);
     }
 
-    private void cargarLista() {
-        todosLosDatos = new ArrayList<>();
-        Cursor c = db.lista_productos();
-
-        while (c.moveToNext()) {
-            HashMap<String, String> fila = new HashMap<>();
-            fila.put("idProducto",   c.getString(0));
-            fila.put("codigo",       c.getString(1));
-            fila.put("descripcion",  c.getString(2));
-            fila.put("marca",        c.getString(3));
-            fila.put("presentacion", c.getString(4));
-            fila.put("precio",       c.getString(5));
-            fila.put("urlFoto",      c.getString(6));
-            todosLosDatos.add(fila);
-        }
-        c.close();
-
-        FloatingActionButton fabAgregar = findViewById(R.id.fabAgregar);
-        fabAgregar.setOnClickListener(v ->
-                startActivity(new Intent(this, MainActivity.class)));
-
-        adapter = new ProductoAdapter(this, todosLosDatos);
-        lista.setAdapter(adapter);
+    private void confirmarEliminacion(HashMap<String, String> item) {
+        new AlertDialog.Builder(this)
+                .setTitle("Eliminar Producto")
+                .setMessage("¿Eliminar " + item.get("descripcion") + "?")
+                .setPositiveButton("Sí", (d, w) -> {
+                    String[] datos = {item.get("idProducto")};
+                    if (db.administrar_Productos("eliminar", datos).equals("ok")) {
+                        Toast.makeText(this, "Eliminado localmente", Toast.LENGTH_SHORT).show();
+                        cargarLista();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     @Override

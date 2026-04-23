@@ -10,7 +10,7 @@
         android:id="@+id/tvTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tienda "
+        android:text="Tienda"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="#1565C0"
@@ -51,12 +51,12 @@
         android:id="@+id/txtMarca"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textColorHint="#888888"
         android:layout_below="@+id/txtDescripcion"
         android:layout_marginTop="14dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
         android:hint="Marca"
         android:inputType="text"
         android:background="@android:drawable/edit_text" />
@@ -89,11 +89,39 @@
         android:inputType="numberDecimal"
         android:background="@android:drawable/edit_text" />
 
+    <EditText
+        android:id="@+id/txtCosto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtPrecio"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:hint="Costo ($)"
+        android:inputType="numberDecimal"
+        android:background="@android:drawable/edit_text" />
+
+    <EditText
+        android:id="@+id/txtStock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtCosto"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:hint="Stock (existencia)"
+        android:inputType="number"
+        android:background="@android:drawable/edit_text" />
+
     <LinearLayout
         android:id="@+id/layoutFotos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtPrecio"
+        android:layout_below="@+id/txtStock"
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:orientation="horizontal">

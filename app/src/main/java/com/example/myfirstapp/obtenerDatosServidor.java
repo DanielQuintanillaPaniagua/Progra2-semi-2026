@@ -2,7 +2,6 @@ package com.example.myfirstapp;
 
 import android.os.Handler;
 import android.os.Looper;
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,37 +14,54 @@ public class obtenerDatosServidor {
         void onRespuesta(String respuesta);
     }
 
-    // Obtener todos los productos (usa url_consulta de utilidades)
     public static void obtener(Callback callback) {
         obtener(utilidades.url_consulta, callback);
     }
 
-    // Obtener un documento específico por URL
     public static void obtener(String _url, Callback callback) {
         new Thread(() -> {
-            StringBuilder respuesta = new StringBuilder();
+            String jsonResponse = "";
             HttpURLConnection httpURLConnection = null;
             try {
                 URL url = new URL(_url);
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("GET");
+                httpURLConnection.setRequestProperty("Accept", "application/json"); // Indicamos que esperamos JSON
                 httpURLConnection.setRequestProperty("Authorization",
                         "Basic " + utilidades.credencialesCodificadas);
 
-                InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String linea;
-                while ((linea = bufferedReader.readLine()) != null) respuesta.append(linea);
+                // Verificamos el código de respuesta (200 es OK)
+                int responseCode = httpURLConnection.getResponseCode();
+                InputStream inputStream;
+
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                } else {
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+                if (inputStream != null) {
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                    StringBuilder sb = new StringBuilder();
+                    String linea;
+                    while ((linea = bufferedReader.readLine()) != null) {
+                        sb.append(linea);
+                    }
+                    jsonResponse = sb.toString();
+                    bufferedReader.close();
+                }
 
             } catch (Exception e) {
-                respuesta.append("Error: ").append(e.getMessage());
+                jsonResponse = "Error: " + e.getMessage();
             } finally {
                 if (httpURLConnection != null) httpURLConnection.disconnect();
             }
 
-            String finalRespuesta = respuesta.toString();
+            final String finalResponse = jsonResponse;
             new Handler(Looper.getMainLooper()).post(() -> {
-                if (callback != null) callback.onRespuesta(finalRespuesta);
+                if (callback != null) {
+                    callback.onRespuesta(finalResponse);
+                }
             });
         }).start();
     }
