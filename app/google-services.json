@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "575472129826",
+    "firebase_url": "https://practicaugb2026-default-rtdb.firebaseio.com",
+    "project_id": "practicaugb2026",
+    "storage_bucket": "practicaugb2026.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575472129826:android:c8cc2638db89a34f9e377b",
+        "android_client_info": {
+          "package_name": "com.example.myfirstapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqOGryMgQr5eE2iwps4Fb9guy_4HI8kJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
